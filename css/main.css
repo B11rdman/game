@@ -3,9 +3,73 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 .box {
   width: 70px;
   height: 70px;
   border: 2px solid;
+  border-color: azure;
   margin: 20px;
+  position: absolute;
+}
+
+.button {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.board {
+  background-color: #333333;
+  padding: 10px;
+  height: 80vh;
+  position: relative;
+}
+
+.question-box {
+  background-color: #cccccc;
+  padding: 10px;
+  border-radius: 50%;
+  height: 25vh;
+  width: 25vh;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.question {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 30px;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+}
+
+.bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.answer-text {
+  font-size: 50px;
+  color: #ffffff;
 }

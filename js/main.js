@@ -1,111 +1,224 @@
-let startGame = document.querySelector('.start-game');
-startGame.onclick = function() {
-    let config = {
-        DURATION: 30,
-        TIMER: 5,
-        ALPHABET: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-        LEVELS: [
-            { id: 1, label: 'Lvl 1', range: [1, 3] },
-            { id: 2, label: 'Lvl 2', range: [1, 3] },
-            { id: 3, label: 'Lvl 3', range: [1, 3] },
-            { id: 4, label: 'Lvl 4', range: [2, 4] },
-            { id: 5, label: 'Lvl 5', range: [2, 4] },
-            { id: 6, label: 'Lvl 6', range: [2, 4] },
-            { id: 7, label: 'Lvl 7', range: [3, 5] },
-            { id: 8, label: 'Lvl 8', range: [3, 5] },
-            { id: 9, label: 'Lvl 9', range: [3, 5] },
-            { id: 10, label: 'Lvl 10', range: [3, 5] },
-            { id: 11, label: 'Lvl 11', range: [3, 5] },
-            { id: 12, label: 'Lvl 12', range: [4, 6] },
-            { id: 13, label: 'Lvl 13', range: [4, 6] },
-            { id: 14, label: 'Lvl 14', range: [4, 6] },
-            { id: 15, label: 'Lvl 15', range: [4, 6] },
-            { id: 16, label: 'Lvl 16', range: [4, 6] },
-            { id: 17, label: 'Lvl 17', range: [5, 7] },
-            { id: 18, label: 'Lvl 18', range: [5, 7] },
-            { id: 19, label: 'Lvl 19', range: [5, 7] },
-            { id: 20, label: 'Lvl 20', range: [5, 7] },
-        ]
-    }
-    let i = 0;
-    let range = config.LEVELS[i].range;
-    let levels = config.LEVELS[i];
-        
-        
-    section = document.querySelector(`section`);
-    section.innerHTML = `
-            <h1 class="timer"></h1>
-            <p class="lvl">${levels.label} </p>
-            <div>
-                <span class="generate-letter"></span>
-                <span class="generate-number"></span>
-            </div>
-            <div class="box top-left"></div>
-            <div class="box top-right"></div>
-            <div class="box bottom-left"></div>
-            <div class="box bottom-right"></div>
-            `;
+const startGame = document.querySelector(".start-game");
+const { ALPHABET: alphabet } = config;
+let duration = +JSON.stringify(config.DURATION);
+let currentLevel = 1;
+let currentRightAnswer = null;
+let levelConfig = config.LEVELS.find((l) => (l.id = currentLevel));
 
-         // timer
-        const time = document.querySelector(`.timer`);
-        let duration = +JSON.stringify(config.DURATION);
-    
-        displayTime(duration);
-        
-        const countDown = setInterval (() => {
-            duration--;
-            displayTime(duration);
-            if(duration <= 0) {
-                endTime();
-                clearInterval(countDown);
-            }
-        }, 1000);
-    
-        function displayTime(second) {
-            const min = Math.floor(second / 60);
-            const sec = Math.floor(second % 60);
-            time.innerHTML = `${min < 10 ? `0` : ``}${min}:${sec < 10 ? `0` : ``}${sec}`;
-        }
-        function endTime() {
-            time.innerHTML = `TIME OUT`;
-        }
+// startGame.addEventListener("click", onStartGameClick);
 
-    let boxes = document.querySelectorAll(`.box`);
-    boxes.forEach((e) => {
-        (e.addEventListener)('click', () => {
+window.onload = onStartGameClick();
 
-        // const eventListener = (e.addEventListener || startGame)(`click`, () => {
-        
-            let alphabet = config.ALPHABET;
-            let generatedNumber = document.querySelector(`.generate-number`);
-            let generateLetter = document.querySelector(`.generate-letter`);
+function onStartGameClick() {
+  buildInitialLevel();
+  generateQuestion();
+}
 
-            // Random Integer
-            function randomInteger(min, max) {
-                let rand = min + Math.random() * (max + 1 - min);
-                return Math.floor(rand);
-            }
+function buildInitialLevel() {
+  const section = document.querySelector(`section`);
+  section.innerHTML = "";
+  buildTimer(section);
+  buildLevelBar(section);
+  buildBoard(section);
+  const board = document.querySelector(`.board`);
 
-            for (i = 0; i < boxes.length; i++) {
-                boxes[i].innerHTML = alphabet[randomInteger(0, alphabet.length-1)];
-            }
-            generateLetter.innerHTML = alphabet[randomInteger(0, alphabet.length-1)];
-            generatedNumber.innerHTML = randomInteger(range[0], range[1]);
+  buildQuestionBox(board);
+  buildBoxes(board);
+}
 
-            // e.removeEventListener(`click`, eventListener);
-        
-            trueAnswer = randomInteger(0, boxes.length -1);
-            boxes[trueAnswer].classList.add(`trueAnswer`);
-            console.log(trueAnswer);
+function buildTimer(section) {
+  const timer = document.createElement("h1");
+  timer.className = "timer";
+  section.appendChild(timer);
+  displayTime(duration);
+}
 
-            if(answer === trueAnswer) {
-                duration = duration + timer;
-                id++;
-            } else {
-                duration = duration - timer;
-            }
-        });
+function buildLevelBar(section) {
+  const level = document.createElement("p");
+  level.className = "lvl";
+  level.innerHTML = `Level ${currentLevel}`;
+  section.appendChild(level);
+}
+
+function buildBoard(section) {
+  const board = document.createElement("div");
+  board.className = "board";
+  section.appendChild(board);
+}
+
+function buildBoxes(board) {
+  BoxConfig.forEach((boxClasses) => {
+    const box = document.createElement("div");
+    box.className = boxClasses;
+    board.appendChild(box);
+  });
+}
+
+function buildQuestionBox(board) {
+  const questionBox = document.createElement("div");
+  questionBox.className = "question-box";
+  board.appendChild(questionBox);
+}
+
+function displayTime(second) {
+  const timer = document.querySelector(".timer");
+  const min = Math.floor(second / 60);
+  const sec = Math.floor(second % 60);
+
+  const timerValue = `${min < 10 ? `0` : ``}${min}:${sec < 10 ? `0` : ``}${sec}`;
+  changeTimerInnerHtml(timer, timerValue);
+  console.warn(second);
+}
+
+// function countDown() {
+//   setInterval(() => {
+//     duration--;setQuestion
+//     displayTime(duration);
+//     if (duration <= 0) {
+//       changeTimerInnerHtml(timer, `TIME OUT`);
+//       clearInterval(countDown);
+//     }
+//   }, 1000);
+// }
+
+function changeTimerInnerHtml(timer, value) {
+  timer.innerHTML = value;
+}
+
+function generateQuestion() {
+  const letter = getLetter(alphabet);
+  const range = getRange();
+
+  const answers = generateAnswers(letter, range);
+  setOptionsInBoxes(answers);
+  setQuestion(letter, range);
+}
+
+function setOptionsInBoxes(answers) {
+  const answerBoxes = document.querySelectorAll(".box");
+
+  answerBoxes.forEach((b, i) => {
+    b.innerHTML = "";
+    const answerText = document.createElement("p");
+    answerText.className = "answer-text";
+    answerText.innerHTML = answers[i];
+    b.canBeClicked = true;
+    b.value = answers[i];
+    b.appendChild(answerText);
+
+    b.addEventListener("click", onBoxClick.bind(null, b));
+  });
+}
+
+function onBoxClick(box) {
+  console.warn("clickes");
+  if (box.canBeClicked) {
+    const answerBoxes = document.querySelectorAll(".box");
+    answerBoxes.forEach((b) => (b.canBeClicked = false));
+    checkAnswer(box.value);
+  }
+}
+
+function checkAnswer(chosenAnswer) {
+  if (chosenAnswer === currentRightAnswer) {
+    rightAnswerActions();
+  } else {
+    wrongAnswerActions();
+  }
+}
+
+function rightAnswerActions() {
+  currentLevel++;
+  levelConfig = config.LEVELS.find((l) => (l.id = currentLevel));
+  generateQuestion();
+}
+
+function wrongAnswerActions() {
+  console.warn(" you got it wrong ");
+}
+
+function setQuestion(letter, range) {
+  const questionBox = document.querySelector(".question-box");
+  questionBox.innerHTML = "";
+  const question = document.createElement("p");
+  question.className = "question";
+  question.innerHTML = `${letter}+${range}`;
+
+  questionBox.appendChild(question);
+}
+
+function getLetter(alphabet) {
+  const n = alphabet.length;
+  const index = Math.floor(Math.random() * n);
+  const letter = alphabet[index];
+
+  return letter;
+}
+
+function getRange() {
+  const { range } = levelConfig;
+  const min = range[0];
+  const max = range[1];
+  const n = Math.floor(Math.random() * (max + 1 - min) + min);
+
+  return n;
+}
+
+function generateAnswers(letter, range) {
+  const rightAnswer = getRightAnswer(letter, range);
+  currentRightAnswer = rightAnswer;
+  console.warn(currentRightAnswer);
+  const wrongAnswers = getWrongAnswers(rightAnswer);
+  const answers = [rightAnswer, ...wrongAnswers];
+
+  for (let i = answers.length - 1; i > 0; i -= 1) {
+    const min = 0;
+    const max = Math.floor(i);
+    const j = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const temp = answers[i];
+    answers[i] = answers[j];
+    answers[j] = temp;
+  }
+
+  return answers;
+}
+
+function getRightAnswer(letter, range) {
+  const index = alphabet.indexOf(letter);
+  const rightAnswerIndex = (index + range) % alphabet.length;
+  const rightAnswer = alphabet[rightAnswerIndex];
+
+  return rightAnswer;
+}
+
+function getWrongAnswers(rightAnswer) {
+  const wrongAnswersArr = [];
+  for (let i = 0; i < 3; i++) {
+    let wrongAnswer = getWrongLetter(rightAnswer, wrongAnswersArr);
+
+    wrongAnswersArr.push(wrongAnswer);
+  }
+
+  return wrongAnswersArr;
+}
+
+function getWrongLetter(rightAnswer, wrongAnswersArr) {
+  const n = alphabet.length;
+  const index = Math.floor(Math.random() * n);
+  let wrongLetter = alphabet[index];
+
+  if (wrongLetter === rightAnswer) {
+    wrongLetter = getWrongLetter(rightAnswer, wrongAnswersArr);
+  }
+
+  if (wrongAnswersArr.length !== 0) {
+    wrongAnswersArr.forEach((a) => {
+      if (a === wrongLetter) {
+        wrongLetter = getWrongLetter(rightAnswer, wrongAnswersArr);
+      }
     });
-} 
+  }
 
-
+  return wrongLetter;
+}
