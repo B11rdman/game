@@ -67,19 +67,22 @@ function displayTime(second) {
 
   const timerValue = `${min < 10 ? `0` : ``}${min}:${sec < 10 ? `0` : ``}${sec}`;
   changeTimerInnerHtml(timer, timerValue);
+
+  countDown();
+
   console.warn(second);
 }
 
-// function countDown() {
-//   setInterval(() => {
-//     duration--;setQuestion
-//     displayTime(duration);
-//     if (duration <= 0) {
-//       changeTimerInnerHtml(timer, `TIME OUT`);
-//       clearInterval(countDown);
-//     }
-//   }, 1000);
-// }
+function countDown() {
+  setInterval(() => {
+    duration--;setQuestion
+    displayTime(duration);
+    if (duration <= 0) {
+      changeTimerInnerHtml(timer, `TIME OUT`);
+      clearInterval(countDown);
+    }
+  }, 1000);
+}
 
 function changeTimerInnerHtml(timer, value) {
   timer.innerHTML = value;

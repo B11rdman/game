@@ -1,75 +1,89 @@
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
-
+section {
+    max-width: 600px;
+    min-width: 300px;
+    min-height: 400px;
+    margin: 0 auto;
+}
+.timer,
+.lvl {
+    text-align: center;
+}
 .box {
-  width: 70px;
-  height: 70px;
-  border: 2px solid;
-  border-color: azure;
-  margin: 20px;
-  position: absolute;
+    width: 70px;
+    height: 70px;
+    border: 2px solid;
+    border-color: azure;
+    position: absolute;
 }
 
 .button {
-  background-color: #4caf50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+    background-color: #2a256b;
+    border: 3px solid;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 }
 
 .board {
-  background-color: #333333;
-  padding: 10px;
-  height: 80vh;
-  position: relative;
+    background-color: #333333;
+    position: relative;
+    color: #fff;
 }
 
 .question-box {
-  background-color: #cccccc;
-  padding: 10px;
-  border-radius: 50%;
-  height: 25vh;
-  width: 25vh;
-  position: absolute;
-  left: 50%;
-  top: 50%;
+    background-color: #ccc;
+    color: #000;
+    padding: 10px;
+    border-radius: 50%;
+    height: 25vh;
+    width: 25vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .question {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
 }
 
 .top-left {
-  top: 0;
-  left: 0;
+    top: 0;
+    left: 0;
 }
 
 .top-right {
-  top: 0;
-  right: 0;
+    top: 0;
+    right: 0;
 }
 
 .bottom-right {
-  bottom: 0;
-  right: 0;
+    bottom: 0;
+    right: 0;
 }
 
 .bottom-left {
-  bottom: 0;
-  left: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .answer-text {
-  font-size: 50px;
-  color: #ffffff;
+    font-size: 50px;
+    color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
