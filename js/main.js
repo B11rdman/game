@@ -99,14 +99,16 @@ function setOptionsInBoxes(answers) {
 
   answerBoxes.forEach((b, i) => {
     b.innerHTML = "";
+    const block = document.createElement("div");
     const answerText = document.createElement("p");
     answerText.className = "answer-text";
     answerText.innerHTML = answers[i];
     b.canBeClicked = true;
     b.value = answers[i];
-    b.appendChild(answerText);
+    block.appendChild(answerText);
+    b.appendChild(block);
 
-    b.addEventListener("click", onBoxClick.bind(null, b));
+    block.addEventListener("click", onBoxClick.bind(null, b));
   });
 }
 
