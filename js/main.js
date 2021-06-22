@@ -6,7 +6,6 @@ let timerSec = +JSON.stringify(config.TIMER);
 
 let currentLevel = 1;
 
-
 let currentRightAnswer = null;
 let levelConfig = config.LEVELS.find((l) => (l.id = currentLevel));
 console.log(levelConfig.id);
@@ -37,7 +36,6 @@ function buildTimer(section) {
   section.appendChild(timer);
   displayTime(duration);
   countDown();
-
 }
 
 function buildLevelBar(section) {
@@ -77,20 +75,26 @@ function displayTime(second) {
 }
 
 function countDown() {
-  setInterval(() => {
+  const interval = setInterval(() => {
     duration--;
     displayTime(duration);
     if (duration <= 0) {
-      timer= document.querySelector(".timer");
-      
+      const timer = document.querySelector(".timer");
       changeTimerInnerHtml(timer, `00:00`);
-      clearInterval(countDown);
+      clearInterval(interval);
+      showLoseText();
     }
   }, 1000);
 }
 
 function changeTimerInnerHtml(timer, value) {
   timer.innerHTML = value;
+}
+
+function showLoseText() {
+  const section = document.querySelector(`section`);
+  section.innerHTML = "";
+  section.innerHTML = "You Lost";
 }
 
 function generateQuestion() {
