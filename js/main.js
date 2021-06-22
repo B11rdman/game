@@ -1,10 +1,15 @@
 const startGame = document.querySelector(".start-game");
 const { ALPHABET: alphabet } = config;
 let duration = +JSON.stringify(config.DURATION);
+let timerSec = +JSON.stringify(config.TIMER);
+// let currentLevel = 1;
+
 let currentLevel = 1;
+
+
 let currentRightAnswer = null;
 let levelConfig = config.LEVELS.find((l) => (l.id = currentLevel));
-
+console.log(levelConfig.id);
 // startGame.addEventListener("click", onStartGameClick);
 
 window.onload = onStartGameClick();
@@ -31,12 +36,14 @@ function buildTimer(section) {
   timer.className = "timer";
   section.appendChild(timer);
   displayTime(duration);
+  countDown();
+
 }
 
 function buildLevelBar(section) {
   const level = document.createElement("p");
   level.className = "lvl";
-  level.innerHTML = `Level ${currentLevel}`;
+  level.innerHTML = `Lvl ${currentLevel}`;
   section.appendChild(level);
 }
 
@@ -67,18 +74,16 @@ function displayTime(second) {
 
   const timerValue = `${min < 10 ? `0` : ``}${min}:${sec < 10 ? `0` : ``}${sec}`;
   changeTimerInnerHtml(timer, timerValue);
-
-  countDown();
-
-  console.warn(second);
 }
 
 function countDown() {
   setInterval(() => {
-    duration--;setQuestion
+    duration--;
     displayTime(duration);
     if (duration <= 0) {
-      changeTimerInnerHtml(timer, `TIME OUT`);
+      timer= document.querySelector(".timer");
+      
+      changeTimerInnerHtml(timer, `00:00`);
       clearInterval(countDown);
     }
   }, 1000);
@@ -116,7 +121,6 @@ function setOptionsInBoxes(answers) {
 }
 
 function onBoxClick(box) {
-  console.warn("clickes");
   if (box.canBeClicked) {
     const answerBoxes = document.querySelectorAll(".box");
     answerBoxes.forEach((b) => (b.canBeClicked = false));
@@ -133,13 +137,16 @@ function checkAnswer(chosenAnswer) {
 }
 
 function rightAnswerActions() {
-  currentLevel++;
-  levelConfig = config.LEVELS.find((l) => (l.id = currentLevel));
+  let currentLevel = document.querySelector(".lvl");
+  levelConfig.id++;
+  currentLevel.innerHTML = `Lvl ${levelConfig.id}`;
   generateQuestion();
+  duration = duration + timerSec;
 }
 
 function wrongAnswerActions() {
-  console.warn(" you got it wrong ");
+  generateQuestion();
+  duration = duration - timerSec;
 }
 
 function setQuestion(letter, range) {
@@ -162,6 +169,7 @@ function getLetter(alphabet) {
 
 function getRange() {
   const { range } = levelConfig;
+  console.log(range);
   const min = range[0];
   const max = range[1];
   const n = Math.floor(Math.random() * (max + 1 - min) + min);
@@ -172,7 +180,6 @@ function getRange() {
 function generateAnswers(letter, range) {
   const rightAnswer = getRightAnswer(letter, range);
   currentRightAnswer = rightAnswer;
-  console.warn(currentRightAnswer);
   const wrongAnswers = getWrongAnswers(rightAnswer);
   const answers = [rightAnswer, ...wrongAnswers];
 
@@ -224,6 +231,5 @@ function getWrongLetter(rightAnswer, wrongAnswersArr) {
       }
     });
   }
-
   return wrongLetter;
 }

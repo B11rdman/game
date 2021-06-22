@@ -1,5 +1,5 @@
 const config = {
-  DURATION: 30,
+  DURATION: 10,
   TIMER: 5,
   ALPHABET: [
     "A",
